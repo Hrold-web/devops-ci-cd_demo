@@ -1,62 +1,22 @@
-name: Label automation
-on:
-  project_card:
-    types: [moved, created]
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
 
+name: Label issues
+on:
+  issues:
+    types:
+      - reopened
+      - opened
 jobs:
-  label_automation:
+  label_issues:
     runs-on: ubuntu-latest
     permissions:
       issues: write
     steps:
-      - name: Automate labelling in Bucket column
-        if: github.event.project_card.column_id == '5965967'
-        uses: andymckay/labeler@master
+      - name: Label issues
+        uses: andymckay/labeler@5c59dabdfd4dd5bd9c6e6d255b01b9d764af4414
         with:
-          add-labels: "bucket"
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: Automate labelling in Ready column
-        if: github.event.project_card.column_id == '5338726'
-        uses: andymckay/labeler@master
-        with:
-          add-labels: "ready"
-          remove-labels: "in progress, under review, review, impeded, bucket, proposal"
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Check if rework label needs to be added
-        if: github.event.changes.column_id.from == '5338737' && github.event.project_card.column_id == '5338726'
-        uses: andymckay/labeler@master
-        with:
-          add-labels: "rework"
-          
-      - name: Automate labelling in In Progress column
-        if: github.event.project_card.column_id == '5338729'
-        uses: andymckay/labeler@master
-        with:
-          add-labels: "in progress"
-          remove-labels: "ready, impeded, review, under review, bucket"
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: l Automate labelling in Impeded column
-        if: github.event.project_card.column_id == '5338730'
-        uses: andymckay/labeler@master
-        with:
-          add-labels: "Impeded"
-          remove-labels: "in progress, ready, review, bucket"
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-    
-      - name:  Automate labelling in Review column
-        if: github.event.project_card.column_id == '5338737'
-        uses: andymckay/labeler@master
-        with:
-          add-labels: "Review"
-          remove-labels: "in progress, ready, impeded, bucket"
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name:  Automate labelling in Complete column
-        if: github.event.project_card.column_id == '16090892'
-        uses: andymckay/labeler@master
-        with:
-          remove-labels: "in progress, ready, impeded, review, under review, bucket"
+          add-labels: "triage"
           repo-token: ${{ secrets.GITHUB_TOKEN }}
